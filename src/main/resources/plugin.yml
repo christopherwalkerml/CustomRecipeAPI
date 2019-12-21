@@ -1,0 +1,4 @@
+name: CustomRecipeAPI
+version: ${project.version}
+main: me.darkolythe.customrecipeapi.CustomRecipeAPI
+api-version: 1.13
