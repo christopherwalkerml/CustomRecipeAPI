@@ -1,35 +1,68 @@
 package me.darkolythe.customrecipeapi;
 
-import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.block.Block;
+import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class CustomRecipeAPI extends JavaPlugin {
-
-    public static String prefix = ChatColor.WHITE.toString() + ChatColor.BOLD.toString() + "[" + ChatColor.BLUE.toString() + "CRAPI" + ChatColor.WHITE.toString() + ChatColor.BOLD.toString() + "] ";
+public final class CustomRecipeAPI {
 
     private List<CustomRecipe> recipes;
+    private ShapedRecipe workbench;
 
-    @Override
-    public void onEnable() {
+    private RecipeListener recipelistener;
 
+    private List<Integer[]> workbenchCoords;
+
+    /**
+     * CustomRecipeAPI constructor.
+     */
+    public CustomRecipeAPI() {
         recipes = new ArrayList<>();
-
-        System.out.println(prefix + ChatColor.GREEN + "CRAPI enabled!");
+        workbenchCoords = new ArrayList<>();
     }
 
-    @Override
-    public void onDisable() {
-        System.out.println(prefix + ChatColor.RED + "CRAPI disabled!");
-    }
-
-    void addRecipe(CustomRecipe newRecipe) {
+    /**
+     * Add a recipe to the custom recipe list.
+     * @param newRecipe CustomRecipe object to add
+     */
+    public void addRecipe(CustomRecipe newRecipe) {
         recipes.add(newRecipe);
     }
 
-    void removeRecipe(CustomRecipe newRecipe) {
+    /**
+     * Remove a recipe from the custom recipe list.
+     * @param newRecipe CustomRecipe object to remove
+     */
+    public void removeRecipe(CustomRecipe newRecipe) {
         recipes.remove(newRecipe);
+    }
+
+    /**
+     * Sets the recipe and item for the workbench with the recipe.
+     * @param newRecipe ShapedRecipe for workbench
+     */
+    public void setWorkBench(ShapedRecipe newRecipe) {
+        workbench = newRecipe;
+    }
+
+    ShapedRecipe getWorkbench() {
+        return workbench;
+    }
+
+    void addWorkbench(Block block) {
+        Integer[] coords = {block.getX(), block.getY(), block.getZ()};
+        workbenchCoords.add(coords);
+    }
+
+    void removeWorkbench(Block block) {
+        Integer[] coords = {block.getX(), block.getY(), block.getZ()};
+        workbenchCoords.remove(coords);
+    }
+
+    boolean isWorkbench(Block block) {
+        Integer[] coords = {block.getX(), block.getY(), block.getZ()};
+        return workbenchCoords.contains(coords);
     }
 }
