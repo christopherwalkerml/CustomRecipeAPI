@@ -15,7 +15,7 @@ public class CustomRecipe {
     /**
      * Create a new recipe with ItemStacks. The order is the same as the ShapedRecipe order. For blank spots, use AIR as an ItemStack.
      * The recipe must first be created, then added to the CustomRecipeAPI to be in use.
-     * @param result the item to return when crafted.
+     * @param newResult the item to return when crafted.
      * @param newRecipe ItemStacks to use in recipe. max of 9. 10+ will be ignored.
      */
     public CustomRecipe(ItemStack newResult, ItemStack... newRecipe) {
@@ -45,5 +45,9 @@ public class CustomRecipe {
 
     ItemStack getResult() {
         return result;
+    }
+
+    ItemStack getItem(int i) {
+        return recipe.get(i);
     }
 }

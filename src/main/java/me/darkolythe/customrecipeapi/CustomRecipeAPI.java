@@ -1,76 +1,27 @@
 package me.darkolythe.customrecipeapi;
 
-import org.bukkit.block.Block;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.ChatColor;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+public final class CustomRecipeAPI extends JavaPlugin {
 
-public final class CustomRecipeAPI {
+    public static String prefix = ChatColor.WHITE.toString() + ChatColor.BOLD.toString() + "[" + ChatColor.BLUE.toString() + "CRAPI" + ChatColor.WHITE.toString() + ChatColor.BOLD.toString() + "] ";
 
-    private List<CustomRecipe> recipes;
-    private ShapedRecipe workbench;
+    private static RecipeListener recipelistener;
+    private static APIManager apimanager;
 
-    private RecipeListener recipelistener;
-    public Plugin plugin;
+    @Override
+    public void onEnable() {
+        apimanager = new APIManager(this);
 
-    private List<Integer[]> workbenchCoords;
+        recipelistener = new RecipeListener(this);
 
-    /**
-     * CustomRecipeAPI constructor.
-     * @param newPlugin Pass the plugin through to the API
-     */
-    public CustomRecipeAPI(Plugin newPlugin) {
-        recipes = new ArrayList<>();
-        workbenchCoords = new ArrayList<>();
-        plugin = newPlugin;
+        getServer().getPluginManager().registerEvents(recipelistener, this);
+
+        System.out.println(prefix + ChatColor.GREEN + "CustomRecipeAPI enabled!");
     }
 
-    /**
-     * Add a recipe to the custom recipe list.
-     * @param newRecipe CustomRecipe object to add
-     */
-    public void addRecipe(CustomRecipe newRecipe) {
-        recipes.add(newRecipe);
-    }
-
-    /**
-     * Remove a recipe from the custom recipe list.
-     * @param newRecipe CustomRecipe object to remove
-     */
-    public void removeRecipe(CustomRecipe newRecipe) {
-        recipes.remove(newRecipe);
-    }
-
-    List<CustomRecipe> getRecipes() {
-        return recipes;
-    }
-
-    /**
-     * Sets the recipe and item for the workbench with the recipe.
-     * @param newRecipe ShapedRecipe for workbench
-     */
-    public void setWorkBench(ShapedRecipe newRecipe) {
-        workbench = newRecipe;
-    }
-
-    ShapedRecipe getWorkbench() {
-        return workbench;
-    }
-
-    void addWorkbench(Block block) {
-        Integer[] coords = {block.getX(), block.getY(), block.getZ()};
-        workbenchCoords.add(coords);
-    }
-
-    void removeWorkbench(Block block) {
-        Integer[] coords = {block.getX(), block.getY(), block.getZ()};
-        workbenchCoords.remove(coords);
-    }
-
-    boolean isWorkbench(Block block) {
-        Integer[] coords = {block.getX(), block.getY(), block.getZ()};
-        return workbenchCoords.contains(coords);
+    public static APIManager getManager() {
+        return apimanager;
     }
 }
