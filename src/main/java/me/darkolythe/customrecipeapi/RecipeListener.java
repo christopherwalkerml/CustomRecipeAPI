@@ -43,6 +43,7 @@ public class RecipeListener implements Listener {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (event.getClickedBlock() != null) {
                 if (main.isWorkbench(event.getClickedBlock())) {
+                    event.setCancelled(true);
                     event.getPlayer().openInventory(Bukkit.getServer().createInventory(null, InventoryType.DISPENSER, ChatColor.BOLD.toString() + "Special Crafting"));
                 }
             }
