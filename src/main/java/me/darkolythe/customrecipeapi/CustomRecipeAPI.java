@@ -2,6 +2,7 @@ package me.darkolythe.customrecipeapi;
 
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +13,18 @@ public final class CustomRecipeAPI {
     private ShapedRecipe workbench;
 
     private RecipeListener recipelistener;
+    public Plugin plugin;
 
     private List<Integer[]> workbenchCoords;
 
     /**
      * CustomRecipeAPI constructor.
+     * @param newPlugin Pass the plugin through to the API
      */
-    public CustomRecipeAPI() {
+    public CustomRecipeAPI(Plugin newPlugin) {
         recipes = new ArrayList<>();
         workbenchCoords = new ArrayList<>();
+        plugin = newPlugin;
     }
 
     /**
@@ -37,6 +41,10 @@ public final class CustomRecipeAPI {
      */
     public void removeRecipe(CustomRecipe newRecipe) {
         recipes.remove(newRecipe);
+    }
+
+    List<CustomRecipe> getRecipes() {
+        return recipes;
     }
 
     /**
