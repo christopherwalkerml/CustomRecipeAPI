@@ -34,7 +34,9 @@ public class CraftItemTask extends BukkitRunnable {
                                 inv.setItem(index, recipe.getResult());
                             }
                             for (int i = 0; i < 9; i++) {
-                                eventInventory.getItem(i).setAmount(eventInventory.getItem(i).getAmount() - recipe.getItem(i).getAmount());
+                                if (eventInventory.getItem(i) != null) {
+                                    eventInventory.getItem(i).setAmount(eventInventory.getItem(i).getAmount() - recipe.getItem(i).getAmount());
+                                }
                             }
                         } else {
                             player.sendMessage(ChatColor.RED.toString() + "Inventory is full. Cannot craft item.");

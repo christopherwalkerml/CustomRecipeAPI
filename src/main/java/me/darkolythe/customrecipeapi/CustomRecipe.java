@@ -36,10 +36,16 @@ public class CustomRecipe {
 
     boolean checkRecipe(Inventory inv) {
         for (int i = 0; i < recipe.size(); i++) {
-            if ((inv.getItem(i) == null && recipe.get(i).getType() != Material.AIR) || inv.getItem(i).getType() != recipe.get(i).getType()) {
+            ItemStack invitem = inv.getItem(i);
+            ItemStack recitem = recipe.get(i);
+            if (invitem == null) {
+                invitem = new ItemStack(Material.AIR);
+            }
+
+            if (invitem.getType() != recitem.getType()) {
                 return false;
             }
-            if (!cloneOne(inv.getItem(i)).equals(cloneOne(recipe.get(i))) || inv.getItem(i).getAmount() < recipe.get(i).getAmount()) {
+            if (!cloneOne(invitem).equals(cloneOne(recitem)) || invitem.getAmount() < recitem.getAmount()) {
                 return false;
             }
         }
