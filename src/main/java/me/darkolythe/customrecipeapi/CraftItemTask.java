@@ -52,7 +52,7 @@ public class CraftItemTask extends BukkitRunnable {
      * Get the first slot in the player's inventory that can hold the requested item. -1 for no slot.
      * @param inv Inventory - Player's Inventory
      * @param item ItemStack to fit in the inventory
-     * @return
+     * @return Integer first free index
      */
     private int getFirst(Inventory inv, ItemStack item) {
         for (int i = 0; i < inv.getSize(); i++) {

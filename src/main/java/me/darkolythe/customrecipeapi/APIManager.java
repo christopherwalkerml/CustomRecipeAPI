@@ -14,7 +14,7 @@ public class APIManager {
      * Add a recipe to the custom recipe list.
      * @param newRecipe CustomRecipe object to add
      */
-    public static void addRecipe(CustomRecipe newRecipe) {
+    static void addRecipe(CustomRecipe newRecipe) {
         recipes.add(newRecipe);
     }
 
