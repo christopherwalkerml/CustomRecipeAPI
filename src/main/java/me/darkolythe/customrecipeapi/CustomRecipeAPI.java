@@ -1,6 +1,7 @@
 package me.darkolythe.customrecipeapi;
 
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class CustomRecipeAPI extends JavaPlugin {
@@ -12,7 +13,7 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        apimanager = new APIManager(this);
+        apimanager = new APIManager();
 
         recipelistener = new RecipeListener(this);
 
@@ -23,5 +24,18 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
     public static APIManager getManager() {
         return apimanager;
+    }
+
+    /**
+     * Create a new recipe with ItemStacks. The order is the same as the ShapedRecipe order. For blank spots, use AIR as an ItemStack.
+     * The recipe must first be created, then added to the CustomRecipeAPI to be in use.
+     * @param newResult the ItemStack to return when crafted.
+     * @param newRecipe ItemStacks to use in recipe. max of 9. 10+ will be ignored.
+     */
+    public static CustomRecipe createRecipe(ItemStack newResult, ItemStack... newRecipe) {
+        CustomRecipe newCustomRecipe = new CustomRecipe(newResult, newRecipe);
+
+        APIManager.addRecipe(newCustomRecipe);
+        return newCustomRecipe;
     }
 }

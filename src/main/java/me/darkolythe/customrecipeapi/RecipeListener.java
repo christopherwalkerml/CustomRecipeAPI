@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
@@ -21,15 +23,12 @@ public class RecipeListener implements Listener {
     }
 
     @EventHandler
-    private void recipeCheck(InventoryClickEvent event) {
-        if (event.getClickedInventory() != null) {
-            if (event.getWhoClicked() instanceof Player) {
-                Player player = (Player) event.getWhoClicked();
+    private void recipeCheck(InventoryOpenEvent event) {
+        if (event.getPlayer() instanceof Player) {
+            Player player = (Player) event.getPlayer();
 
-                CraftItemTask task = new CraftItemTask(player, event.getClickedInventory(), main);
-                BukkitTask id = task.runTaskTimer(main, 1L, 400L);
-                taskList.put(player, id);
-            }
+            BukkitTask id = new CraftItemTask(player, event.getInventory()).runTaskTimer(main, 1, 10);
+            taskList.put(player, id);
         }
     }
 

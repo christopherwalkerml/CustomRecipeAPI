@@ -1,26 +1,14 @@
 package me.darkolythe.customrecipeapi;
 
-import org.bukkit.block.Block;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class APIManager {
 
-    private static List<CustomRecipe> recipes;
+    private static List<CustomRecipe> recipes = new ArrayList<>();
     private static ShapedRecipe workbench;
-
-    public static Plugin plugin;
-
-    /**
-     * CustomRecipeAPI constructor.
-     */
-    public APIManager(CustomRecipeAPI newPlugin) {
-        recipes = new ArrayList<>();
-        plugin = newPlugin;
-    }
 
     /**
      * Add a recipe to the custom recipe list.
@@ -38,7 +26,7 @@ public class APIManager {
         recipes.remove(newRecipe);
     }
 
-    List<CustomRecipe> getRecipes() {
+    static List<CustomRecipe> getRecipes() {
         return recipes;
     }
 

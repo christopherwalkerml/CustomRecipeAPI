@@ -1,6 +1,5 @@
 package me.darkolythe.customrecipeapi;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,12 +12,10 @@ public class CraftItemTask extends BukkitRunnable {
 
     private Player player;
     private Inventory eventInventory;
-    private CustomRecipeAPI main;
 
-    public CraftItemTask(Player newPlayer, Inventory newEventInventory, CustomRecipeAPI newMain) {
+    public CraftItemTask(Player newPlayer, Inventory newEventInventory) {
         player = newPlayer;
         eventInventory = newEventInventory;
-        main = newMain;
     }
 
     @Override
@@ -26,7 +23,7 @@ public class CraftItemTask extends BukkitRunnable {
         Inventory inv = player.getInventory();
         if (player.getOpenInventory().getTitle().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Special Crafting")) {
             if (eventInventory.getType() == InventoryType.DISPENSER) {
-                for (CustomRecipe recipe : main.getManager().getRecipes()) {
+                for (CustomRecipe recipe : APIManager.getRecipes()) {
                     if (recipe.checkRecipe(eventInventory)) {
                         if (getFirst(inv, recipe.getResult()) != -1) {
                             int index = getFirst(inv, recipe.getResult());
@@ -35,12 +32,9 @@ public class CraftItemTask extends BukkitRunnable {
                                 item.setAmount(item.getAmount() + recipe.getResult().getAmount());
                             } else {
                                 inv.setItem(index, recipe.getResult());
-
-                                for (int i = 0; i < 9; i++) {
-                                    inv.getItem(i).setAmount(inv.getItem(i).getAmount() - recipe.getItem(i).getAmount());
-                                }
-
-                                this.cancel();
+                            }
+                            for (int i = 0; i < 9; i++) {
+                                eventInventory.getItem(i).setAmount(eventInventory.getItem(i).getAmount() - recipe.getItem(i).getAmount());
                             }
                         } else {
                             player.sendMessage(ChatColor.RED.toString() + "Inventory is full. Cannot craft item.");
@@ -63,11 +57,15 @@ public class CraftItemTask extends BukkitRunnable {
             if (inv.getItem(i) != null && inv.getItem(i).getType() != Material.AIR) {
                 if (cloneOne(inv.getItem(i)).equals(cloneOne(item))) {
                     if ((inv.getItem(i).getAmount() + item.getAmount()) <= inv.getItem(i).getMaxStackSize()) {
-                        return i;
+                        if (i < 36) {
+                            return i;
+                        }
                     }
                 }
             } else {
-                return i;
+                if (i <= 36) {
+                    return i;
+                }
             }
         }
         return -1;
