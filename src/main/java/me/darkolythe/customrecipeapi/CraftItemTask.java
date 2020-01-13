@@ -21,7 +21,7 @@ public class CraftItemTask extends BukkitRunnable {
     @Override
     public void run() {
         Inventory inv = player.getInventory();
-        if (player.getOpenInventory().getTitle().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Special Crafting")) {
+        if (player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getItemMeta().getDisplayName())) {
             if (eventInventory.getType() == InventoryType.DISPENSER) {
                 for (CustomRecipe recipe : APIManager.getRecipes()) {
                     if (recipe.checkRecipe(eventInventory)) {
