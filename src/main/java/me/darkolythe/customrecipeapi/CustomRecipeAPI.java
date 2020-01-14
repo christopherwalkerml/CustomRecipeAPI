@@ -8,16 +8,25 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
     public static String prefix = ChatColor.WHITE.toString() + ChatColor.BOLD.toString() + "[" + ChatColor.BLUE.toString() + "CRAPI" + ChatColor.WHITE.toString() + ChatColor.BOLD.toString() + "] ";
 
+    static CustomRecipeAPI plugin;
+
     private static RecipeListener recipelistener;
+    private static BookListener booklistener;
     private static APIManager apimanager;
 
     @Override
     public void onEnable() {
+        plugin = this;
+
         apimanager = new APIManager();
 
         recipelistener = new RecipeListener(this);
+        booklistener = new BookListener();
 
         getServer().getPluginManager().registerEvents(recipelistener, this);
+        getServer().getPluginManager().registerEvents(booklistener, this);
+
+        getCommand("crapi").setExecutor(new CommandHandler());
 
         System.out.println(prefix + ChatColor.GREEN + "CustomRecipeAPI enabled!");
     }
@@ -37,5 +46,9 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
         APIManager.addRecipe(newCustomRecipe);
         return newCustomRecipe;
+    }
+
+    static CustomRecipeAPI getInstance() {
+        return plugin;
     }
 }

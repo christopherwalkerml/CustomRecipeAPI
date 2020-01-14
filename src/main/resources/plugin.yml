@@ -2,3 +2,19 @@ name: CustomRecipeAPI
 version: 1.0.1
 main: me.darkolythe.customrecipeapi.CustomRecipeAPI
 api-version: 1.13
+
+commands:
+  crapi:
+    usage: /<command>
+    aliases: [customrecipeapi]
+    description: the CRAPI command
+    permission: crapi.command
+    permission-message: You do not have permission!
+
+permissions:
+  crapi.command:
+    description: Allows the use of minechange commands
+    default: op
+  crapi.book:
+    description: Allows the use of minechange commands
+    default: op
