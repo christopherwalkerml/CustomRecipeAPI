@@ -9,6 +9,8 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static me.darkolythe.customrecipeapi.BookManager.createBackButton;
+
 public class BookListener implements Listener {
 
     @EventHandler
@@ -37,6 +39,10 @@ public class BookListener implements Listener {
                 }
             } else if (event.getView().getTitle().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Custom Recipe View")) {
                 event.setCancelled(true);
+                ItemStack item = event.getCurrentItem();
+                if (item != null && item.equals(createBackButton())) {
+                    player.openInventory(BookManager.getRecipeBook(player, 0));
+                }
             }
         }
     }

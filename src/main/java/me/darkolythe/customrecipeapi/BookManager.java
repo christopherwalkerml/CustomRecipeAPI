@@ -94,6 +94,8 @@ public class BookManager {
             inv.setItem(31, recipe.getItem(8));
             inv.setItem(24, recipe.getResult());
 
+            inv.setItem(44, createBackButton());
+
             player.openInventory(inv);
         }
     }
@@ -105,5 +107,15 @@ public class BookManager {
             }
         }
         return null;
+    }
+
+    static ItemStack createBackButton() {
+        ItemStack item = new ItemStack(Material.BARRIER);
+        ItemMeta meta = item.getItemMeta();
+
+        meta.setDisplayName(ChatColor.RED + "Back to Menu");
+        item.setItemMeta(meta);
+
+        return item;
     }
 }
