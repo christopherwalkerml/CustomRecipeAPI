@@ -21,7 +21,7 @@ public class BookManager {
 
         for (int i = 0; i < 45; i++) {
             if ((page * 45) + i < APIManager.getRecipes().size()) {
-                inv.addItem(createRecipe(APIManager.getRecipes().get((page * 45) + i), player));
+                inv.setItem(inv.firstEmpty(), createRecipe(APIManager.getRecipes().get((page * 45) + i), player));
             }
         }
         return inv;
@@ -74,25 +74,16 @@ public class BookManager {
 
             Inventory inv = Bukkit.createInventory(player, 45, ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Custom Recipe View");
 
-            ItemStack empty = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-            ItemMeta meta = empty.getItemMeta();
-            meta.setDisplayName(ChatColor.GRAY + "Recipe View");
-            empty.setItemMeta(meta);
+            fillEmpty(inv);
 
-            for (int i = 0; i < 45; i++) {
-                inv.setItem(i, empty.clone());
+            for (int i = 0; i < 9; i++) {
+                inv.setItem((i % 3) + 11 + (9 * (i / 3)), recipe.getItem(i));
             }
-
-            inv.setItem(11, recipe.getItem(0));
-            inv.setItem(12, recipe.getItem(1));
-            inv.setItem(13, recipe.getItem(2));
-            inv.setItem(20, recipe.getItem(3));
-            inv.setItem(21, recipe.getItem(4));
-            inv.setItem(22, recipe.getItem(5));
-            inv.setItem(29, recipe.getItem(6));
-            inv.setItem(30, recipe.getItem(7));
-            inv.setItem(31, recipe.getItem(8));
             inv.setItem(24, recipe.getResult());
+
+            if (!recipe.getForced()) {
+                inv.setItem(8, createDeleteButton());
+            }
 
             inv.setItem(44, createBackButton());
 
@@ -117,5 +108,25 @@ public class BookManager {
         item.setItemMeta(meta);
 
         return item;
+    }
+
+    static ItemStack createDeleteButton() {
+        ItemStack del = new ItemStack(Material.RED_TERRACOTTA);
+        ItemMeta delmeta = del.getItemMeta();
+        delmeta.setDisplayName(ChatColor.RED + "Delete Recipe");
+        delmeta.setLore(Arrays.asList(ChatColor.GRAY + "cannot be undone"));
+        del.setItemMeta(delmeta);
+        return del;
+    }
+
+    static void fillEmpty(Inventory inv) {
+        ItemStack empty = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta meta = empty.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Recipe View");
+        empty.setItemMeta(meta);
+
+        for (int i = 0; i < 45; i++) {
+            inv.setItem(i, empty.clone());
+        }
     }
 }

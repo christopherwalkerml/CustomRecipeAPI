@@ -12,7 +12,9 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
     private static RecipeListener recipelistener;
     private static BookListener booklistener;
+    private static RecipeCreator recipecreator;
     private static APIManager apimanager;
+    private static ConfigHandler confighandler;
 
     @Override
     public void onEnable() {
@@ -22,17 +24,27 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
         recipelistener = new RecipeListener(this);
         booklistener = new BookListener();
+        recipecreator = new RecipeCreator();
+        confighandler = new ConfigHandler();
 
+        confighandler.setup();
         getServer().getPluginManager().registerEvents(recipelistener, this);
         getServer().getPluginManager().registerEvents(booklistener, this);
+        getServer().getPluginManager().registerEvents(recipecreator, this);
 
         getCommand("crapi").setExecutor(new CommandHandler());
+
+        confighandler.loadRecipes();
 
         System.out.println(prefix + ChatColor.GREEN + "CustomRecipeAPI enabled!");
     }
 
     public static APIManager getManager() {
         return apimanager;
+    }
+
+    public static ConfigHandler getConfigHandler() {
+        return confighandler;
     }
 
     /**

@@ -22,11 +22,15 @@ public class CommandHandler implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("crapi")) { //if the player has permission, and the command is right
             if (player.hasPermission("crapi.command")) {
                 if (args.length == 0) {
-                    player.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi book");
+                    player.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi [book, new]");
                 } else {
                     if (args[0].equalsIgnoreCase("book")) { //if there's more than one argument, and it's book
                         if (player.hasPermission("crapi.book")) { //if the command executor has permission
                             player.openInventory(BookManager.getRecipeBook(player, 0));
+                        }
+                    } else if (args[0].equalsIgnoreCase("new")) { //if there's more than one argument, and it's new
+                        if (player.hasPermission("crapi.new")) { //if the command executor has permission
+                            player.openInventory(RecipeCreator.openCreator(player));
                         }
                     }
                 }
