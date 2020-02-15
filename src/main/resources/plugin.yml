@@ -21,3 +21,6 @@ permissions:
   crapi.giveitem:
     description: Allows the use of the CRAPI recipe book to give items
     default: op
+  crapi.new:
+    description: Lets the user create new recipes in-game
+    default: op

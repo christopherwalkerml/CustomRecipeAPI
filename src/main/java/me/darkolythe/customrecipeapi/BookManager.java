@@ -41,6 +41,7 @@ public class BookManager {
         if (player.hasPermission("deepstorageplus.giveitem")) {
             lore.add(ChatColor.GRAY + "Right click to give yourself this item.");
         }
+        lore.add(ChatColor.DARK_GRAY + "id: " + recipe.getID());
         meta.setLore(lore);
         item.setItemMeta(meta);
 
@@ -92,8 +93,10 @@ public class BookManager {
     }
 
     static CustomRecipe getRecipeFromItem(ItemStack item, Player player) {
+        ItemMeta meta = item.getItemMeta();
+        String id = meta.getLore().get(meta.getLore().size() - 1).replaceAll("^[^_]*:", "").replace(" ", "");
         for (CustomRecipe recipe : APIManager.getRecipes()) {
-            if (createRecipe(recipe, player).equals(item)) {
+            if (recipe.getID().equals(id)) {
                 return recipe;
             }
         }
