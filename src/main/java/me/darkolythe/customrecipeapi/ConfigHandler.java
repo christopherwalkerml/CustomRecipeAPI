@@ -1,12 +1,20 @@
 package me.darkolythe.customrecipeapi;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static me.darkolythe.customrecipeapi.WorkbenchManager.recipeList;
+import static me.darkolythe.customrecipeapi.WorkbenchManager.setRecipe;
 
 public class ConfigHandler {
 
@@ -43,6 +51,42 @@ public class ConfigHandler {
                 r.setID(recipes);
                 CustomRecipeAPI.getManager().addRecipe(r);
             }
+        }
+    }
+
+    public void saveWorkbench() {
+        recipeDataConfig = YamlConfiguration.loadConfiguration(recipeData);
+
+        recipeDataConfig.set("workbench.result", APIManager.getWorkbench().getResult());
+        recipeDataConfig.set("workbench.recipe", recipeList());
+        try {
+            recipeDataConfig.save(recipeData);
+        } catch (IOException e) {
+            System.out.println(CustomRecipeAPI.prefix + ChatColor.RED + "Could not save workbench recipe");
+        }
+    }
+
+    public void loadWorkbench() {
+        if (recipeDataConfig.contains("workbench")) {
+            ItemStack result = recipeDataConfig.getItemStack("workbench.result");
+            ItemStack recipe[] = (recipeDataConfig.getList("workbench.recipe")).toArray(new ItemStack[9]);
+
+            Map<Character, ItemStack> map = new HashMap<>();
+            List<Character> order = new ArrayList<>();
+            char c = 'A';
+            for (ItemStack i : recipe) {
+                if (!map.containsValue(i)) {
+                    map.put((char) ((int) c + 1), i);
+                    c++;
+                }
+                for (char chr : map.keySet()) {
+                    if (map.get(chr).equals(i)) {
+                        order.add(chr);
+                        break;
+                    }
+                }
+            }
+            setRecipe(order, map);
         }
     }
 

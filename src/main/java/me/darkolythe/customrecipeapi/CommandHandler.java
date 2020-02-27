@@ -32,6 +32,14 @@ public class CommandHandler implements CommandExecutor {
                         if (player.hasPermission("crapi.new")) { //if the command executor has permission
                             player.openInventory(RecipeCreator.openCreator(player));
                         }
+                    } else if (args[0].equalsIgnoreCase("setworkbench")) {
+                        if (player.hasPermission("crapi.setworkbench")) {
+                            player.openInventory(WorkbenchManager.createWorkbenchCreator());
+                        }
+                    } else if (args[0].equalsIgnoreCase("workbench")) {
+                        if (player.hasPermission("crapi.viewworkbench")) {
+                            player.openInventory(WorkbenchManager.createWorkbenchViewer());
+                        }
                     }
                 }
             }

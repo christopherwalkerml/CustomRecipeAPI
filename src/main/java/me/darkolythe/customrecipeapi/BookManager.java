@@ -82,8 +82,10 @@ public class BookManager {
             }
             inv.setItem(24, recipe.getResult());
 
-            if (!recipe.getForced()) {
-                inv.setItem(8, createDeleteButton());
+            if (player.hasPermission("crapi.new")) {
+                if (!recipe.getForced()) {
+                    inv.setItem(8, createDeleteButton());
+                }
             }
 
             inv.setItem(44, createBackButton());

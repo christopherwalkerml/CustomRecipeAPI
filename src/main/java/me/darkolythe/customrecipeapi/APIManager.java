@@ -38,7 +38,7 @@ public class APIManager {
         workbench = newRecipe;
     }
 
-    static ShapedRecipe getWorkbench() {
+    public static ShapedRecipe getWorkbench() {
         return workbench;
     }
 }
