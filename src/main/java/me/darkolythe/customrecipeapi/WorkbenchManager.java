@@ -4,16 +4,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.KnowledgeBookMeta;
 
 import java.util.*;
 
@@ -70,7 +73,7 @@ public class WorkbenchManager implements Listener {
         meta.setDisplayName(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Special Crafting");
         workbenchItem.setItemMeta(meta);
 
-        ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(main, "Workbench"), workbenchItem);
+        ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(main, "custom_workbench"), workbenchItem);
         recipe.shape("" + order.get(0) + order.get(1) + order.get(2), "" + order.get(3) + order.get(4) + order.get(5), "" + order.get(6) + order.get(7) + order.get(8));
         for (char chr : map.keySet()) {
             recipe.setIngredient(chr, map.get(chr).getType());
@@ -87,6 +90,7 @@ public class WorkbenchManager implements Listener {
             }
         }
         Bukkit.getServer().addRecipe(recipe);
+
         APIManager.setWorkBench(recipe);
     }
 
@@ -95,6 +99,12 @@ public class WorkbenchManager implements Listener {
         if (event.getView().getTitle().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Workbench Recipe View")) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    private void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        player.discoverRecipe(new NamespacedKey(main, "custom_workbench"));
     }
 
     private static void fillInventory(Inventory inv) {
