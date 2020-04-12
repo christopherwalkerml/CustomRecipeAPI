@@ -21,25 +21,27 @@ public class CraftItemTask extends BukkitRunnable {
     @Override
     public void run() {
         Inventory inv = player.getInventory();
-        if (player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getItemMeta().getDisplayName())) {
-            if (eventInventory.getType() == InventoryType.DISPENSER) {
-                for (CustomRecipe recipe : APIManager.getRecipes()) {
-                    if (recipe.checkRecipe(eventInventory)) {
-                        if (getFirst(inv, recipe.getResult()) != -1) {
-                            int index = getFirst(inv, recipe.getResult());
-                            if (inv.getItem(index) != null && inv.getItem(index).getType() != Material.AIR) {
-                                ItemStack item = inv.getItem(index);
-                                item.setAmount(item.getAmount() + recipe.getResult().getAmount());
-                            } else {
-                                inv.setItem(index, recipe.getResult());
-                            }
-                            for (int i = 0; i < 9; i++) {
-                                if (eventInventory.getItem(i) != null) {
-                                    eventInventory.getItem(i).setAmount(eventInventory.getItem(i).getAmount() - recipe.getItem(i).getAmount());
+        if (player.hasPermission("crapi.craft")) {
+            if (player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getItemMeta().getDisplayName())) {
+                if (eventInventory.getType() == InventoryType.DISPENSER) {
+                    for (CustomRecipe recipe : APIManager.getRecipes()) {
+                        if (recipe.checkRecipe(eventInventory)) {
+                            if (getFirst(inv, recipe.getResult()) != -1) {
+                                int index = getFirst(inv, recipe.getResult());
+                                if (inv.getItem(index) != null && inv.getItem(index).getType() != Material.AIR) {
+                                    ItemStack item = inv.getItem(index);
+                                    item.setAmount(item.getAmount() + recipe.getResult().getAmount());
+                                } else {
+                                    inv.setItem(index, recipe.getResult());
                                 }
+                                for (int i = 0; i < 9; i++) {
+                                    if (eventInventory.getItem(i) != null) {
+                                        eventInventory.getItem(i).setAmount(eventInventory.getItem(i).getAmount() - recipe.getItem(i).getAmount());
+                                    }
+                                }
+                            } else {
+                                player.sendMessage(ChatColor.RED.toString() + "Inventory is full. Cannot craft item.");
                             }
-                        } else {
-                            player.sendMessage(ChatColor.RED.toString() + "Inventory is full. Cannot craft item.");
                         }
                     }
                 }

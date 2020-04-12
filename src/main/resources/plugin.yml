@@ -1,5 +1,5 @@
 name: CustomRecipeAPI
-version: 1.2.3
+version: 1.2.4
 main: me.darkolythe.customrecipeapi.CustomRecipeAPI
 api-version: 1.13
 
@@ -29,4 +29,7 @@ permissions:
     default: op
   crapi.viewworkbench:
     description: Allows the user to view the workbench recipe
+    default: op
+  crapi.craft:
+    description: Allows the user to craft custom recipes
     default: op
