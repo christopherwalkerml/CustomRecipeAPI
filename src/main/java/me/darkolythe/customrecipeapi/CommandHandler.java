@@ -22,7 +22,11 @@ public class CommandHandler implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("crapi")) { //if the player has permission, and the command is right
             if (player.hasPermission("crapi.command")) {
                 if (args.length == 0) {
-                    player.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi [book, new]");
+                    if (player.hasPermission("crapi.new")) {
+                        player.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi [book, new, setworkbench, workbench]");
+                    } else {
+                        player.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi [book, new]");
+                    }
                 } else {
                     if (args[0].equalsIgnoreCase("book")) { //if there's more than one argument, and it's book
                         if (player.hasPermission("crapi.book")) { //if the command executor has permission
@@ -39,6 +43,12 @@ public class CommandHandler implements CommandExecutor {
                     } else if (args[0].equalsIgnoreCase("workbench")) {
                         if (player.hasPermission("crapi.viewworkbench")) {
                             player.openInventory(WorkbenchManager.createWorkbenchViewer());
+                        }
+                    } else {
+                        if (player.hasPermission("crapi.new")) {
+                            player.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi [book, new, setworkbench, workbench]");
+                        } else {
+                            player.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi [book, new]");
                         }
                     }
                 }
