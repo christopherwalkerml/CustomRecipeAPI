@@ -1,5 +1,5 @@
 name: CustomRecipeAPI
-version: 1.2.4
+version: 1.2.5
 main: me.darkolythe.customrecipeapi.CustomRecipeAPI
 api-version: 1.13
 
@@ -32,4 +32,4 @@ permissions:
     default: op
   crapi.craft:
     description: Allows the user to craft custom recipes
-    default: op
+    default: true
