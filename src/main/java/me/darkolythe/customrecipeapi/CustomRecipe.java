@@ -123,7 +123,6 @@ public class CustomRecipe {
     }
 
     public void setPermission() {
-        System.out.println(result.toString());
         if (result.hasItemMeta() && result.getItemMeta().hasDisplayName()) {
             permission = ChatColor.stripColor(result.getItemMeta().getDisplayName()).replaceAll("([^a-zA-Z0-9])", "").toLowerCase();
             return;

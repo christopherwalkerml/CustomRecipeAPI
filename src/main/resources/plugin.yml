@@ -33,6 +33,9 @@ permissions:
   crapi.craft:
     description: Allows the user to craft custom recipes
     default: true
+  crapi.craftall:
+    description: Allows the user to craft every custom recipe
+    default: op
   crapi.op:
     description: Allows the user to view the permission name of each recipe
     default: op

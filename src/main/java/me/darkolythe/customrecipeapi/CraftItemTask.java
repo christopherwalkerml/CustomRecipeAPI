@@ -26,7 +26,8 @@ public class CraftItemTask extends BukkitRunnable {
                     || player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getItemMeta().getDisplayName())) {
                 if (eventInventory.getType() == InventoryType.DISPENSER) {
                     for (CustomRecipe recipe : APIManager.getRecipes()) {
-                        if (recipe.checkRecipe(eventInventory)) {
+                        if (recipe.checkRecipe(eventInventory)
+                                && (player.hasPermission("crapi.craft." + recipe.getPermission()) || player.hasPermission("crapi.craftall"))) {
                             if (getFirst(inv, recipe.getResult()) != -1) {
                                 int index = getFirst(inv, recipe.getResult());
                                 if (inv.getItem(index) != null && inv.getItem(index).getType() != Material.AIR) {
@@ -43,6 +44,7 @@ public class CraftItemTask extends BukkitRunnable {
                             } else {
                                 player.sendMessage(ChatColor.RED.toString() + "Inventory is full. Cannot craft item.");
                             }
+                            return;
                         }
                     }
                 }
