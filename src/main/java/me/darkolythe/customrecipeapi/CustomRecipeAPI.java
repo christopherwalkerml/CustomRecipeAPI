@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class CustomRecipeAPI extends JavaPlugin {
 
     public static String prefix = ChatColor.WHITE.toString() + ChatColor.BOLD.toString() + "[" + ChatColor.BLUE.toString() + "CRAPI" + ChatColor.WHITE.toString() + ChatColor.BOLD.toString() + "] ";
+    public static String workbenchName = ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Special Crafting";
 
     static CustomRecipeAPI plugin;
 
@@ -36,6 +37,8 @@ public final class CustomRecipeAPI extends JavaPlugin {
         getServer().getPluginManager().registerEvents(workbenchmanager, this);
 
         getCommand("crapi").setExecutor(new CommandHandler());
+
+        workbenchName = ChatColor.translateAlternateColorCodes('&', getConfig().getString("workbenchtitle"));
 
         confighandler.loadRecipes();
         confighandler.loadWorkbench();
