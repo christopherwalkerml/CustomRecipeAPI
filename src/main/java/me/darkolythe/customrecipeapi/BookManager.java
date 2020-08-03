@@ -15,13 +15,15 @@ import java.util.List;
 public class BookManager {
 
     public static Inventory getRecipeBook(Player player, int page) {
-        Inventory inv = Bukkit.createInventory(null, 54, ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Recipe Book");
+        Inventory inv = Bukkit.createInventory(player, 54, ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Recipe Book");
 
         createBottomRow(inv, page);
 
         for (int i = 0; i < 45; i++) {
             if ((page * 45) + i < APIManager.getRecipes().size()) {
                 inv.setItem(inv.firstEmpty(), createRecipe(APIManager.getRecipes().get((page * 45) + i), player));
+            } else {
+                break;
             }
         }
         return inv;
@@ -38,8 +40,12 @@ public class BookManager {
         lore.add("");
         lore.add(ChatColor.GRAY + "Left click to view recipe.");
 
-        if (player.hasPermission("deepstorageplus.giveitem")) {
+        if (player.hasPermission("crapi.giveitem")) {
             lore.add(ChatColor.GRAY + "Right click to give yourself this item.");
+        }
+        if (player.hasPermission("crapi.op")) {
+            lore.add("");
+            lore.add(ChatColor.GRAY + "Permission name: crapi.craft." + recipe.getPermission());
         }
         lore.add(ChatColor.DARK_GRAY + "id: " + recipe.getID());
         meta.setLore(lore);
@@ -53,7 +59,7 @@ public class BookManager {
             ItemStack invstack = createArrow("Next Page", "Current page", page);
             inv.setItem(53, invstack);
         }
-        if (page > 1) {
+        if (page >= 1) {
             ItemStack invstack = createArrow("Previous Page", "Current page", page);
             inv.setItem(45, invstack);
         }
@@ -63,14 +69,14 @@ public class BookManager {
         ItemStack invstack = new ItemStack(Material.ARROW, 1);
         ItemMeta invmeta = invstack.getItemMeta();
         invmeta.setDisplayName(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + name);
-        invmeta.setLore(Arrays.asList(ChatColor.GREEN.toString() + lore + ": " + page));
+        invmeta.setLore(Arrays.asList(ChatColor.GRAY.toString() + lore + ": " + ChatColor.GREEN.toString() + page));
         invstack.setItemMeta(invmeta);
 
         return invstack;
     }
 
     static void openRecipe(Player player, ItemStack item) {
-        CustomRecipe recipe = getRecipeFromItem(item, player);
+        CustomRecipe recipe = getRecipeFromItem(item);
         if (recipe != null) {
 
             Inventory inv = Bukkit.createInventory(player, 45, ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Custom Recipe View");
@@ -94,7 +100,7 @@ public class BookManager {
         }
     }
 
-    static CustomRecipe getRecipeFromItem(ItemStack item, Player player) {
+    static CustomRecipe getRecipeFromItem(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         String id = meta.getLore().get(meta.getLore().size() - 1).replaceAll("^[^_]*:", "").replace(" ", "");
         for (CustomRecipe recipe : APIManager.getRecipes()) {

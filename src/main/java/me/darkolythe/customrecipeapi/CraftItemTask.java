@@ -22,7 +22,8 @@ public class CraftItemTask extends BukkitRunnable {
     public void run() {
         Inventory inv = player.getInventory();
         if (player.hasPermission("crapi.craft")) {
-            if (player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getItemMeta().getDisplayName())) {
+            if (((!APIManager.getWorkbench().getResult().hasItemMeta() || !APIManager.getWorkbench().getResult().getItemMeta().hasDisplayName()) && player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getType().toString()))
+                    || player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getItemMeta().getDisplayName())) {
                 if (eventInventory.getType() == InventoryType.DISPENSER) {
                     for (CustomRecipe recipe : APIManager.getRecipes()) {
                         if (recipe.checkRecipe(eventInventory)) {

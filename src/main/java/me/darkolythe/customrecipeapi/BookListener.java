@@ -24,15 +24,21 @@ public class BookListener implements Listener {
                     ItemStack item = event.getCurrentItem();
                     if (item != null && item.getItemMeta() != null) {
                         if (item.getItemMeta().getDisplayName().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Next Page") && item.getType() == Material.ARROW) {
-                            int page = Integer.parseInt(item.getItemMeta().getLore().get(0).replaceAll("[^\\d]", ""));
-                            BookManager.getRecipeBook(player, page - 1);
+                            int page = Integer.parseInt(item.getItemMeta().getLore().get(0)
+                                    .replace(ChatColor.GREEN.toString(), "")
+                                    .replace(ChatColor.GRAY.toString(), "")
+                                    .replaceAll("[^\\d]", ""));
+                            player.openInventory(BookManager.getRecipeBook(player, page + 1));
                         } else if (item.getItemMeta().getDisplayName().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Previous Page") && item.getType() == Material.ARROW) {
-                            int page = Integer.parseInt(item.getItemMeta().getLore().get(0).replaceAll("[^\\d]", ""));
-                            BookManager.getRecipeBook(player, page + 1);
+                            int page = Integer.parseInt(item.getItemMeta().getLore().get(0)
+                                    .replace(ChatColor.GREEN.toString(), "")
+                                    .replace(ChatColor.GRAY.toString(), "")
+                                    .replaceAll("[^\\d]", ""));
+                            player.openInventory(BookManager.getRecipeBook(player, page - 1));
                         } else {
                             if (!event.getClickedInventory().equals(player.getInventory())) {
                                 if (event.getClick() == ClickType.RIGHT && player.hasPermission("crapi.giveitem")) {
-                                    player.getInventory().addItem(BookManager.getRecipeFromItem(item, player).getResult());
+                                    player.getInventory().addItem(BookManager.getRecipeFromItem(item).getResult());
                                 } else {
                                     BookManager.openRecipe(player, item);
                                 }

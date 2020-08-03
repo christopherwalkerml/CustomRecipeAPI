@@ -1,5 +1,6 @@
 package me.darkolythe.customrecipeapi;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -13,7 +14,8 @@ public class CustomRecipe {
     private List<ItemStack> recipe;
     private ItemStack result;
     private boolean forced;
-    private String ID;
+    private String ID = "";
+    private String permission = "";
 
     @Override
     public boolean equals(Object o) {
@@ -57,6 +59,7 @@ public class CustomRecipe {
         recipe = new ArrayList<>();
         forced = true;
         setRecipeID();
+        setPermission();
         int size = newRecipe.length;
         for (int i = 0; i < size; i++) {
             if (i == 9) {
@@ -115,7 +118,20 @@ public class CustomRecipe {
         return clone;
     }
 
-    private void setRecipeID() { //a request id is given to every unique request. this makes it so players have the correct amount of contributions
+    public String getPermission() {
+        return permission;
+    }
+
+    public void setPermission() {
+        System.out.println(result.toString());
+        if (result.hasItemMeta() && result.getItemMeta().hasDisplayName()) {
+            permission = ChatColor.stripColor(result.getItemMeta().getDisplayName()).replaceAll("([^a-zA-Z0-9])", "").toLowerCase();
+            return;
+        }
+        permission = result.getType().toString().toLowerCase();
+    }
+
+    private void setRecipeID() { //a recipe id is given to every unique recipe
         String genstr;
 
         int min = 97; //char 'a'
