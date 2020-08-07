@@ -102,7 +102,6 @@ public class CustomRecipe implements ConfigurationSerializable {
 
     boolean checkRecipe(Inventory inv) {
         if (isShaped) {
-            System.out.println("but here");
             for (int i = 0; i < recipe.size(); i++) {
                 ItemStack invitem = inv.getItem(i);
                 ItemStack recitem = recipe.get(i);
