@@ -11,6 +11,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class RecipeCreator implements Listener {
 
     private CustomRecipeAPI main = CustomRecipeAPI.getInstance();
@@ -29,6 +32,7 @@ public class RecipeCreator implements Listener {
         inv.setItem(31, null);
         inv.setItem(24, null);
 
+        inv.setItem(8, createShapelessItem(true));
         inv.setItem(44, createCreateItem());
 
         return inv;
@@ -53,6 +57,8 @@ public class RecipeCreator implements Listener {
                         }
                     }
                     event.getWhoClicked().sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Recipe");
+                } else if (inv.getItem(slot) != null && slot == 8) {
+                    inv.setItem(8, createShapelessItem(!getCurrentShape(inv.getItem(slot))));
                 }
             }
         }
@@ -77,6 +83,7 @@ public class RecipeCreator implements Listener {
             if (valid) {
                 r = new CustomRecipe(inv.getItem(24), recipe[0], recipe[1], recipe[2], recipe[3], recipe[4], recipe[5], recipe[6], recipe[7], recipe[8]);
                 r.setForced(false);
+                r.setShaped(getCurrentShape(inv.getItem(8)));
             }
         }
         return r;
@@ -88,5 +95,23 @@ public class RecipeCreator implements Listener {
         meta.setDisplayName(ChatColor.GREEN + "Create Custom Recipe");
         create.setItemMeta(meta);
         return create;
+    }
+
+    public static ItemStack createShapelessItem(boolean isShaped) {
+        ItemStack shapeless = new ItemStack(Material.CRAFTING_TABLE);
+        ItemMeta meta = shapeless.getItemMeta();
+        meta.setDisplayName(ChatColor.BLUE + "Toggle Shapeless Recipe");
+        meta.setLore(Arrays.asList("", ChatColor.GRAY + "Shaped: " + ChatColor.BLUE + isShaped));
+        shapeless.setItemMeta(meta);
+        return shapeless;
+    }
+
+    private static boolean getCurrentShape(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.getLore();
+        if (lore.get(1).contains("true")) {
+            return true;
+        }
+        return false;
     }
 }

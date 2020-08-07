@@ -3,6 +3,7 @@ package me.darkolythe.customrecipeapi;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,6 +17,7 @@ public class CustomRecipe implements ConfigurationSerializable {
     private String ID = "";
     private String permission = "";
     private boolean fromPlugin = false;
+    private boolean isShaped = true;
 
     @Override
     public boolean equals(Object o) {
@@ -73,11 +75,12 @@ public class CustomRecipe implements ConfigurationSerializable {
         }
     }
 
-    CustomRecipe(ItemStack newResult, List<ItemStack> newRecipe, boolean newForced, String newID) {
+    CustomRecipe(ItemStack newResult, List<ItemStack> newRecipe, boolean newForced, String newID, boolean shaped) {
         result = newResult;
         recipe = newRecipe;
         forced = newForced;
         ID = newID;
+        isShaped = shaped;
         setPermission();
     }
 
@@ -89,19 +92,57 @@ public class CustomRecipe implements ConfigurationSerializable {
         return fromPlugin;
     }
 
+    public void setShaped(boolean shapeless) {
+        isShaped = shapeless;
+    }
+
+    public boolean getShaped() {
+        return isShaped;
+    }
+
     boolean checkRecipe(Inventory inv) {
-        for (int i = 0; i < recipe.size(); i++) {
-            ItemStack invitem = inv.getItem(i);
-            ItemStack recitem = recipe.get(i);
-            if (invitem == null) {
-                invitem = new ItemStack(Material.AIR);
+        if (isShaped) {
+            System.out.println("but here");
+            for (int i = 0; i < recipe.size(); i++) {
+                ItemStack invitem = inv.getItem(i);
+                ItemStack recitem = recipe.get(i);
+                if (invitem == null) {
+                    invitem = new ItemStack(Material.AIR);
+                }
+
+                if (invitem.getType() != recitem.getType()) {
+                    return false;
+                }
+                if (!cloneOne(invitem).equals(cloneOne(recitem)) || invitem.getAmount() < recitem.getAmount()) {
+                    return false;
+                }
+            }
+        } else {
+            List<ItemStack> invItems = new ArrayList<>(Arrays.asList(inv.getContents()));
+            List<ItemStack> recipeItems = new ArrayList<>(recipe);
+
+            invItems.removeIf(i -> (i == null));
+            recipeItems.removeIf(i -> (i.getType() == Material.AIR));
+
+            if (invItems.size() != recipeItems.size()) {
+                return false;
             }
 
-            if (invitem.getType() != recitem.getType()) {
-                return false;
-            }
-            if (!cloneOne(invitem).equals(cloneOne(recitem)) || invitem.getAmount() < recitem.getAmount()) {
-                return false;
+            for (ItemStack r : recipeItems) {
+                boolean found = false;
+                int index = 0;
+                for (ItemStack i : invItems) {
+                    if (cloneOne(i).equals(cloneOne(r)) && i.getAmount() <= r.getAmount()) {
+                        found = true;
+                        break;
+                    }
+                    index++;
+                }
+                if (found) {
+                    invItems.remove(index);
+                } else {
+                    return false;
+                }
             }
         }
         return true;
@@ -193,6 +234,7 @@ public class CustomRecipe implements ConfigurationSerializable {
         result.put("result", this.result);
         result.put("forced", this.forced);
         result.put("id", this.ID);
+        result.put("shaped", this.isShaped);
 
         return result;
     }
@@ -202,6 +244,7 @@ public class CustomRecipe implements ConfigurationSerializable {
         ItemStack newResult;
         boolean newForced;
         String newID;
+        boolean shaped = true;
 
         List<?> list = (List<?>) args.get("recipe");
         for (Object o : list) {
@@ -211,8 +254,10 @@ public class CustomRecipe implements ConfigurationSerializable {
         newForced = (Boolean) args.get("forced");
         newID = (String) args.get("id");
 
-        CustomRecipe cr = new CustomRecipe(newResult, newRecipe, newForced, newID);
+        if (args.containsKey("shaped")) {
+            shaped = (boolean) args.get("shaped");
+        }
 
-        return cr;
+        return new CustomRecipe(newResult, newRecipe, newForced, newID, shaped);
     }
 }

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static me.darkolythe.customrecipeapi.RecipeCreator.createShapelessItem;
+
 public class BookManager {
 
     public static Inventory getRecipeBook(Player player, int page) {
@@ -90,9 +92,11 @@ public class BookManager {
 
             if (player.hasPermission("crapi.new")) {
                 if (!recipe.getForced()) {
-                    inv.setItem(8, createDeleteButton());
+                    inv.setItem(36, createDeleteButton());
                 }
             }
+
+            inv.setItem(8, createShapelessItem(recipe.getShaped()));
 
             inv.setItem(44, createBackButton());
 
