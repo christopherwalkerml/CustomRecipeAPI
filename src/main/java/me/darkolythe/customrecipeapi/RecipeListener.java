@@ -25,7 +25,7 @@ public class RecipeListener implements Listener {
         if (event.getPlayer() instanceof Player) {
             Player player = (Player) event.getPlayer();
 
-            BukkitTask id = new CraftItemTask(player, event.getInventory()).runTaskTimer(main, 1, 5);
+            BukkitTask id = new CraftItemTask(player, event.getInventory()).runTaskTimer(main, 1, 1);
             taskList.put(player, id);
         }
     }

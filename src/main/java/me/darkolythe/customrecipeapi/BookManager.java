@@ -45,7 +45,7 @@ public class BookManager {
         }
         if (player.hasPermission("crapi.op")) {
             lore.add("");
-            lore.add(ChatColor.GRAY + "Permission name: crapi.craft." + recipe.getPermission());
+            lore.add(ChatColor.GRAY + "Permission: crapi.craft." + recipe.getPermission());
         }
         lore.add(ChatColor.DARK_GRAY + "id: " + recipe.getID());
         meta.setLore(lore);

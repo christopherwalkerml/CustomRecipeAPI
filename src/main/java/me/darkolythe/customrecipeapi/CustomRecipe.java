@@ -2,20 +2,20 @@ package me.darkolythe.customrecipeapi;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public class CustomRecipe {
+public class CustomRecipe implements ConfigurationSerializable {
 
     private List<ItemStack> recipe;
     private ItemStack result;
     private boolean forced;
     private String ID = "";
     private String permission = "";
+    private boolean fromPlugin = false;
 
     @Override
     public boolean equals(Object o) {
@@ -71,6 +71,22 @@ public class CustomRecipe {
         for (int i = 0; i < 9 - recipe.size(); i++) {
             recipe.add(new ItemStack(Material.AIR));
         }
+    }
+
+    CustomRecipe(ItemStack newResult, List<ItemStack> newRecipe, boolean newForced, String newID) {
+        result = newResult;
+        recipe = newRecipe;
+        forced = newForced;
+        ID = newID;
+        setPermission();
+    }
+
+    public void setFromPlugin(boolean val) {
+        fromPlugin = val;
+    }
+
+    public boolean getFromPlugin() {
+        return fromPlugin;
     }
 
     boolean checkRecipe(Inventory inv) {
@@ -158,5 +174,45 @@ public class CustomRecipe {
      */
     void setID(String id) {
         ID = id;
+    }
+
+
+    /*
+        private List<ItemStack> recipe;
+    private ItemStack result;
+    private boolean forced;
+    private String ID = "";
+    private String permission = "";
+     */
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> result = new LinkedHashMap<>();
+
+        result.put("recipe", this.recipe);
+        result.put("result", this.result);
+        result.put("forced", this.forced);
+        result.put("id", this.ID);
+
+        return result;
+    }
+
+    public static CustomRecipe deserialize(Map<String, Object> args) {
+        List<ItemStack> newRecipe = new ArrayList<>();
+        ItemStack newResult;
+        boolean newForced;
+        String newID;
+
+        List<?> list = (List<?>) args.get("recipe");
+        for (Object o : list) {
+            newRecipe.add((ItemStack) o);
+        }
+        newResult = (ItemStack) args.get("result");
+        newForced = (Boolean) args.get("forced");
+        newID = (String) args.get("id");
+
+        CustomRecipe cr = new CustomRecipe(newResult, newRecipe, newForced, newID);
+
+        return cr;
     }
 }

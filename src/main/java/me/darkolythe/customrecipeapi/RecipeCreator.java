@@ -47,7 +47,7 @@ public class RecipeCreator implements Listener {
                         CustomRecipe recipe = createRecipeFromInventory(inv);
                         if (recipe != null) {
                             CustomRecipeAPI.getManager().addRecipe(recipe);
-                            CustomRecipeAPI.getConfigHandler().saveRecipe(recipe);
+                            CustomRecipeAPI.getConfigHandler().saveRecipes();
                             event.getWhoClicked().closeInventory();
                             return;
                         }

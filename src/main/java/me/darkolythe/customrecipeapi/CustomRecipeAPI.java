@@ -1,6 +1,7 @@
 package me.darkolythe.customrecipeapi;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,6 +23,8 @@ public final class CustomRecipeAPI extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        ConfigurationSerialization.registerClass(CustomRecipe.class);
+
         apimanager = new APIManager();
 
         recipelistener = new RecipeListener(this);
@@ -38,12 +41,19 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
         getCommand("crapi").setExecutor(new CommandHandler());
 
+        saveDefaultConfig();
         workbenchName = ChatColor.translateAlternateColorCodes('&', getConfig().getString("workbenchtitle"));
 
         confighandler.loadRecipes();
         confighandler.loadWorkbench();
 
         System.out.println(prefix + ChatColor.GREEN + "CustomRecipeAPI enabled!");
+    }
+
+    @Override
+    public void onDisable() {
+        confighandler.saveRecipes();
+        confighandler.saveWorkbench();
     }
 
     public static APIManager getManager() {
@@ -62,6 +72,7 @@ public final class CustomRecipeAPI extends JavaPlugin {
      */
     public static CustomRecipe createRecipe(ItemStack newResult, ItemStack... newRecipe) {
         CustomRecipe newCustomRecipe = new CustomRecipe(newResult, newRecipe);
+        newCustomRecipe.setFromPlugin(true);
 
         APIManager.addRecipe(newCustomRecipe);
         return newCustomRecipe;

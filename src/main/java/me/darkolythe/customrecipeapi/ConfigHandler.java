@@ -43,13 +43,21 @@ public class ConfigHandler {
 
     public void loadRecipes() {
         if (recipeDataConfig.contains("recipes")) {
-            for (String recipes : recipeDataConfig.getConfigurationSection("recipes").getKeys(false)) {
-                ItemStack result = recipeDataConfig.getItemStack("recipes." + recipes + ".result");
-                ItemStack recipe[] = (recipeDataConfig.getList("recipes." + recipes + ".recipe")).toArray(new ItemStack[9]);
-                CustomRecipe r = new CustomRecipe(result, recipe);
-                r.setForced(recipeDataConfig.getBoolean("recipes." + recipes + ".forced"));
-                r.setID(recipes);
-                CustomRecipeAPI.getManager().addRecipe(r);
+            Object identifier = recipeDataConfig.get("recipes");
+            if (identifier instanceof List) {
+                List<?> temp = recipeDataConfig.getList("recipes");
+                for (Object o : temp) {
+                    CustomRecipeAPI.getManager().addRecipe((CustomRecipe) o);
+                }
+            } else {
+                for (String recipes : recipeDataConfig.getConfigurationSection("recipes").getKeys(false)) {
+                    ItemStack result = recipeDataConfig.getItemStack("recipes." + recipes + ".result");
+                    ItemStack recipe[] = (recipeDataConfig.getList("recipes." + recipes + ".recipe")).toArray(new ItemStack[9]);
+                    CustomRecipe r = new CustomRecipe(result, recipe);
+                    r.setForced(recipeDataConfig.getBoolean("recipes." + recipes + ".forced"));
+                    r.setID(recipes);
+                    CustomRecipeAPI.getManager().addRecipe(r);
+                }
             }
         }
     }
@@ -90,22 +98,19 @@ public class ConfigHandler {
         }
     }
 
-    public void saveRecipe(CustomRecipe recipe) {
+    public void saveRecipes() {
         recipeDataConfig = YamlConfiguration.loadConfiguration(recipeData);
 
-        String path = "recipes." + recipe.getID();
-        recipeDataConfig.set(path + ".result", recipe.getResult());
-        recipeDataConfig.set(path + ".recipe", recipe.getRecipe());
-        recipeDataConfig.set(path + ".forced", recipe.getForced());
-        try {
-            recipeDataConfig.save(recipeData);
-        } catch (IOException e) {
-            System.out.println(CustomRecipeAPI.prefix + ChatColor.RED + "Could not save recipes");
-        }
-    }
+        recipeDataConfig.set("recipes", null);
 
-    public void unsaveRecipe(CustomRecipe recipe) {
-        recipeDataConfig.set("recipes." + recipe.getID(), null);
+        List<CustomRecipe> customRecipes = new ArrayList<>();
+        for (CustomRecipe recipes : CustomRecipeAPI.getManager().getRecipes()) {
+            if (recipes.getFromPlugin() == false) {
+                customRecipes.add(recipes);
+            }
+        }
+
+        recipeDataConfig.set("recipes", customRecipes);
         try {
             recipeDataConfig.save(recipeData);
         } catch (IOException e) {

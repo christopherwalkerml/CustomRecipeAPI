@@ -55,10 +55,10 @@ public class BookListener implements Listener {
                         for (CustomRecipe r : CustomRecipeAPI.getManager().getRecipes()) {
                             if (r.equals(recipe)) {
                                 CustomRecipeAPI.getManager().removeRecipe(r);
-                                CustomRecipeAPI.getConfigHandler().unsaveRecipe(r);
                                 break;
                             }
                         }
+                        CustomRecipeAPI.getConfigHandler().saveRecipes();
                         player.openInventory(BookManager.getRecipeBook(player, 0));
                     }
                 }
