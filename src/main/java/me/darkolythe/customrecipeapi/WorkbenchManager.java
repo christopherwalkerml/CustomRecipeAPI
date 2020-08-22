@@ -50,8 +50,8 @@ public class WorkbenchManager implements Listener {
                     i = new ItemStack(Material.AIR);
                 }
                 if (!map.containsValue(i)) {
-                    map.put((char) ((int) c + 1), i);
                     c++;
+                    map.put((char) ((int) c), i);
                 }
                 for (char chr : map.keySet()) {
                     if (map.get(chr).equals(i)) {

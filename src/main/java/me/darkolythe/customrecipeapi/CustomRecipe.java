@@ -3,7 +3,6 @@ package me.darkolythe.customrecipeapi;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -41,7 +40,9 @@ public class CustomRecipe implements ConfigurationSerializable {
 
     @Override
     public String toString() {
-        String str = System.lineSeparator() + "ID: " + getID() + System.lineSeparator() + "Result:" + System.lineSeparator();
+        String str = System.lineSeparator() + "ID: " + getID() + System.lineSeparator();
+        str += "Shaped: " + isShaped + System.lineSeparator();
+        str += "Result: " + System.lineSeparator();
         str += "    " + this.getResult() + System.lineSeparator();
         str += "Recipe" + System.lineSeparator();
         for (int i = 0; i < 9; i++) {
@@ -128,16 +129,9 @@ public class CustomRecipe implements ConfigurationSerializable {
             }
 
             for (ItemStack r : recipeItems) {
-                boolean found = false;
-                int index = 0;
-                for (ItemStack i : invItems) {
-                    if (cloneOne(i).equals(cloneOne(r)) && i.getAmount() <= r.getAmount()) {
-                        found = true;
-                        break;
-                    }
-                    index++;
-                }
-                if (found) {
+                int index = getClosestMatch(r, invItems);
+
+                if (index != -1) {
                     invItems.remove(index);
                 } else {
                     return false;
@@ -168,10 +162,31 @@ public class CustomRecipe implements ConfigurationSerializable {
         return recipe.get(i);
     }
 
-    private ItemStack cloneOne(ItemStack item) {
+    public static ItemStack cloneOne(ItemStack item) {
         ItemStack clone = item.clone();
         clone.setAmount(1);
         return clone;
+    }
+
+    public static int getClosestMatch(ItemStack item, List<ItemStack> list) {
+        int amount = 64;
+        int index = -1;
+        for (int i = 0; i < list.size(); i++) {
+            ItemStack litem = list.get(i);
+            if (litem != null) {
+                if (!cloneOne(item).equals(cloneOne(litem)))
+                    continue;
+
+                if (item.getAmount() > litem.getAmount())
+                    continue;
+
+                if (litem.getAmount() - item.getAmount() < amount) {
+                    amount = litem.getAmount() - item.getAmount();
+                    index = i;
+                }
+            }
+        }
+        return index;
     }
 
     public String getPermission() {

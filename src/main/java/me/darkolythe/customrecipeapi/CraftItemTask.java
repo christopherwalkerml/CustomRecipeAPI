@@ -2,10 +2,18 @@ package me.darkolythe.customrecipeapi;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static me.darkolythe.customrecipeapi.CustomRecipe.cloneOne;
+import static me.darkolythe.customrecipeapi.CustomRecipe.getClosestMatch;
 
 public class CraftItemTask extends BukkitRunnable {
 
@@ -33,8 +41,9 @@ public class CraftItemTask extends BukkitRunnable {
             counter = 0;
             Inventory inv = player.getInventory();
             if (player.hasPermission("crapi.craft")) {
-                if (((!APIManager.getWorkbench().getResult().hasItemMeta() || !APIManager.getWorkbench().getResult().getItemMeta().hasDisplayName()) && player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getType().toString()))
-                        || player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getItemMeta().getDisplayName())) {
+                if (APIManager.getWorkbench() != null
+                        && APIManager.getWorkbench().getResult().hasItemMeta()
+                        && player.getOpenInventory().getTitle().equals(APIManager.getWorkbench().getResult().getItemMeta().getDisplayName())) {
                     if (eventInventory.getType() == InventoryType.DISPENSER) {
                         if (lastRecipe != null) {
                             if (lastRecipe.checkRecipe(eventInventory)
@@ -69,9 +78,21 @@ public class CraftItemTask extends BukkitRunnable {
 
 
     private void removeRecipeFromTable(CustomRecipe recipe) {
-        for (int i = 0; i < 9; i++) {
-            if (eventInventory.getItem(i) != null) {
-                eventInventory.getItem(i).setAmount(eventInventory.getItem(i).getAmount() - recipe.getItem(i).getAmount());
+        if (recipe.getShaped()) {
+            for (int i = 0; i < 9; i++) {
+                if (eventInventory.getItem(i) != null) {
+                    eventInventory.getItem(i).setAmount(eventInventory.getItem(i).getAmount() - recipe.getItem(i).getAmount());
+                }
+            }
+        } else {
+            ArrayList<ItemStack> invItems = new ArrayList<>(Arrays.asList(eventInventory.getContents()));
+            ArrayList<ItemStack> recipeItems = new ArrayList<>(Arrays.asList(recipe.getRecipe()));
+            recipeItems.removeIf(i -> (i.getType() == Material.AIR));
+
+            for (ItemStack r : recipeItems) {
+                int index = getClosestMatch(r, invItems);
+                eventInventory.getItem(index).setAmount(eventInventory.getItem(index).getAmount() - r.getAmount());
+                invItems.set(index, null);
             }
         }
     }
