@@ -1,5 +1,6 @@
 package me.darkolythe.customrecipeapi;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;
@@ -46,6 +47,8 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
         confighandler.loadRecipes();
         confighandler.loadWorkbench();
+
+        Metrics metrics = new Metrics(plugin);
 
         System.out.println(prefix + ChatColor.GREEN + "CustomRecipeAPI enabled!");
     }
