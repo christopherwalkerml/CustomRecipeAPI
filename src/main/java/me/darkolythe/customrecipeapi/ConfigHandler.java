@@ -76,7 +76,6 @@ public class ConfigHandler {
 
     public void loadWorkbench() {
         if (recipeDataConfig.contains("workbench")) {
-            ItemStack result = recipeDataConfig.getItemStack("workbench.result");
             ItemStack recipe[] = (recipeDataConfig.getList("workbench.recipe")).toArray(new ItemStack[9]);
 
             Map<Character, ItemStack> map = new HashMap<>();

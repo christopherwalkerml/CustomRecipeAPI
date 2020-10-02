@@ -12,7 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static me.darkolythe.customrecipeapi.CustomRecipe.cloneOne;
 import static me.darkolythe.customrecipeapi.CustomRecipe.getClosestMatch;
 
 public class CraftItemTask extends BukkitRunnable {

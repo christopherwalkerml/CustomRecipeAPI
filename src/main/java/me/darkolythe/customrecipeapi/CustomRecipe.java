@@ -72,7 +72,13 @@ public class CustomRecipe implements ConfigurationSerializable {
         }
 
         for (int i = 0; i < 9 - recipe.size(); i++) {
-            recipe.add(new ItemStack(Material.AIR));
+            recipe.add(new ItemStack(Material.AIR, 1));
+        }
+
+        for (int i = 0; i < recipe.size(); i++) {
+            if (recipe.get(i).getAmount() == 0) {
+                recipe.get(i).setAmount(1);
+            }
         }
     }
 
@@ -83,6 +89,12 @@ public class CustomRecipe implements ConfigurationSerializable {
         ID = newID;
         isShaped = shaped;
         setPermission();
+
+        for (int i = 0; i < recipe.size(); i++) {
+            if (recipe.get(i).getAmount() == 0) {
+                recipe.set(i, new ItemStack(Material.AIR, 1));
+            }
+        }
     }
 
     public void setFromPlugin(boolean val) {
@@ -107,7 +119,7 @@ public class CustomRecipe implements ConfigurationSerializable {
                 ItemStack invitem = inv.getItem(i);
                 ItemStack recitem = recipe.get(i);
                 if (invitem == null) {
-                    invitem = new ItemStack(Material.AIR);
+                    invitem = new ItemStack(Material.AIR, 1);
                 }
 
                 if (invitem.getType() != recitem.getType()) {
@@ -164,7 +176,7 @@ public class CustomRecipe implements ConfigurationSerializable {
 
     public static ItemStack cloneOne(ItemStack item) {
         ItemStack clone = item.clone();
-        clone.setAmount(1);
+        clone.setAmount(0);
         return clone;
     }
 
