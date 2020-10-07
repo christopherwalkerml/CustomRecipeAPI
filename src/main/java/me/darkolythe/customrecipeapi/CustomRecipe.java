@@ -176,7 +176,7 @@ public class CustomRecipe implements ConfigurationSerializable {
 
     public static ItemStack cloneOne(ItemStack item) {
         ItemStack clone = item.clone();
-        clone.setAmount(0);
+        clone.setAmount(1);
         return clone;
     }
 

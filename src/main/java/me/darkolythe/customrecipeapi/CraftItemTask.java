@@ -47,7 +47,7 @@ public class CraftItemTask extends BukkitRunnable {
                         if (lastRecipe != null) {
                             if (lastRecipe.checkRecipe(eventInventory)
                                     && (player.hasPermission("crapi.craft." + lastRecipe.getPermission()) || player.hasPermission("crapi.craftall"))) {
-                                if (inv.addItem(lastRecipe.getResult()).keySet().size() == 0) {
+                                if (inv.addItem(lastRecipe.getResult().clone()).keySet().size() == 0) {
                                     removeRecipeFromTable(lastRecipe);
                                 }
                             } else {
@@ -60,7 +60,7 @@ public class CraftItemTask extends BukkitRunnable {
                                         && (player.hasPermission("crapi.craft." + recipe.getPermission()) || player.hasPermission("crapi.craftall"))) {
                                     lastRecipe = recipe;
                                     delay = 0;
-                                    if (inv.addItem(lastRecipe.getResult()).keySet().size() == 0) {
+                                    if (inv.addItem(lastRecipe.getResult().clone()).keySet().size() == 0) {
                                         removeRecipeFromTable(lastRecipe);
                                     } else {
                                         player.sendMessage(ChatColor.RED.toString() + "Inventory is full. Cannot craft item.");
