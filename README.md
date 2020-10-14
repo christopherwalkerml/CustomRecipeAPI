@@ -13,68 +13,6 @@ How to get started
 
 NOTE: Custom Recipes can now be made in-game with the command /crapi new, in a super easy-to-use GUI
 
-Permissions:
-crapi.command:
-  description: Allows the use of CRAPI commands
-  default: op
-crapi.book:
-  description: Allows the use of the CRAPI recipe book
-  default: op
-crapi.giveitem:
-  description: Allows the use of the CRAPI recipe book to give items
-  default: op
-crapi.new:
-  description: Lets the user create new recipes in-game
-  default: op
-crapi.setworkbench:
-  description: Allows the user to update the workbench recipe
-  default: op
-crapi.viewworkbench:
-  description: Allows the user to view the workbench recipe
-  default: op
-crapi.craft:
-  description: Allows the user to craft custom recipes
-  default: true
-crapi.craft.item_permission:
-  description: per-item permission. To view an item's permission name, have the crapi.op permission and view the /crapi book
-crapi.craftall:
-  description: Allows the user to craft every custom recipe
-  default: op
-crapi.op:
-  description: Allows the user to view the permission name of each recipe
-  default: op
-
-Commands:
-/crapi book
-opens the recipe book
-/crapi new
-opens the recipe creator screen
-/crapi setworkbench
-edit workbench recipe
-/crapi workbench
-view workbench recipe
-
-[SPOILER="config.yml"]
-[code]workbenchtitle: "&e&lSpecial Crafting"
-recipebook: "&e&lRecipe Book"
-nextpage: "&e&lNext Page"
-currentpage: "Current page"
-previouspage: "&e&lPrevious Page"
-customrecipeview: "&e&lCustom Recipe View"
-customrecipecreator: "&e&lCustom Recipe Creator"
-fullinv: "&cInventory is full. Cannot craft item."
-invalidrecipe: "&cInvalid Recipe"
-createrecipe: "&aCreate Custom Recipe"
-toggleshapeless: "&9Toggle Shapeless Recipe"
-shaped: "Shaped"
-leftclicktoview: "&7Left click to view recipe."
-rightclicktogive: "&7Right click to give yourself this item."
-permission: "Permission"
-backtomenu: "&cBack to Menu"
-deleterecipe: "&cDelete Recipe"
-cannotbeundone: "&7cannot be undone"
-recipeview: "&7Recipe View"[/code]
-[/SPOILER]
 
 What you need to know to create recipes in your plugin
 First you need to initialize the craft bench. You NEED to choose a Dispenser for the crafting bench, but the recipe is up to you.
