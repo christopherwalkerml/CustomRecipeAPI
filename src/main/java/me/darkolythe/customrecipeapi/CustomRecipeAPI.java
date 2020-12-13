@@ -23,6 +23,8 @@ public final class CustomRecipeAPI extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        LanguageManager.setup(this);
+
         ConfigurationSerialization.registerClass(CustomRecipe.class);
 
         apimanager = new APIManager();
@@ -45,8 +47,6 @@ public final class CustomRecipeAPI extends JavaPlugin {
 
         confighandler.loadRecipes();
         confighandler.loadWorkbench();
-
-        LanguageManager.setup(this);
 
         Metrics metrics = new Metrics(plugin);
 
