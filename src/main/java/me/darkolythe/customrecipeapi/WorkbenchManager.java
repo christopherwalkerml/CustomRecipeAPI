@@ -19,8 +19,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-import static me.darkolythe.customrecipeapi.CustomRecipeAPI.workbenchName;
-
 public class WorkbenchManager implements Listener {
 
     private static CustomRecipeAPI main = CustomRecipeAPI.getInstance();
@@ -71,7 +69,7 @@ public class WorkbenchManager implements Listener {
     public static void setRecipe(List<Character> order, Map<Character, ItemStack> map) {
         ItemStack workbenchItem = new ItemStack(Material.DISPENSER);
         ItemMeta meta = workbenchItem.getItemMeta();
-        meta.setDisplayName(workbenchName);
+        meta.setDisplayName(LanguageManager.getValue("workbenchtitle"));
         workbenchItem.setItemMeta(meta);
 
         ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(main, "custom_workbench"), workbenchItem);

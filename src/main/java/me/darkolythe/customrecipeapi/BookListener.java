@@ -19,17 +19,17 @@ public class BookListener implements Listener {
         if (event.getClickedInventory() != null) {
             if (event.getWhoClicked() instanceof Player) {
                 Player player = (Player) event.getWhoClicked();
-                if (event.getView().getTitle().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Recipe Book")) {
+                if (event.getView().getTitle().equals(LanguageManager.getValue("recipebook"))) {
                     event.setCancelled(true);
                     ItemStack item = event.getCurrentItem();
                     if (item != null && item.getItemMeta() != null) {
-                        if (item.getItemMeta().getDisplayName().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Next Page") && item.getType() == Material.ARROW) {
+                        if (item.getItemMeta().getDisplayName().equals(LanguageManager.getValue("nextpage")) && item.getType() == Material.ARROW) {
                             int page = Integer.parseInt(item.getItemMeta().getLore().get(0)
                                     .replace(ChatColor.GREEN.toString(), "")
                                     .replace(ChatColor.GRAY.toString(), "")
                                     .replaceAll("[^\\d]", ""));
                             player.openInventory(BookManager.getRecipeBook(player, page + 1));
-                        } else if (item.getItemMeta().getDisplayName().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Previous Page") && item.getType() == Material.ARROW) {
+                        } else if (item.getItemMeta().getDisplayName().equals(LanguageManager.getValue("previouspage")) && item.getType() == Material.ARROW) {
                             int page = Integer.parseInt(item.getItemMeta().getLore().get(0)
                                     .replace(ChatColor.GREEN.toString(), "")
                                     .replace(ChatColor.GRAY.toString(), "")
@@ -45,7 +45,7 @@ public class BookListener implements Listener {
                             }
                         }
                     }
-                } else if (event.getView().getTitle().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Custom Recipe View")) {
+                } else if (event.getView().getTitle().equals(LanguageManager.getValue("customrecipeview"))) {
                     event.setCancelled(true);
                     ItemStack item = event.getCurrentItem();
                     if (item != null && item.equals(createBackButton())) {

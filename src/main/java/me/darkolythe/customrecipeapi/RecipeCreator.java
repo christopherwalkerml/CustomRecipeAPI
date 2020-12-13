@@ -19,7 +19,7 @@ public class RecipeCreator implements Listener {
     private CustomRecipeAPI main = CustomRecipeAPI.getInstance();
 
     static Inventory openCreator(Player player) {
-        Inventory inv = Bukkit.createInventory(player, 45, ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Custom Recipe Creator");
+        Inventory inv = Bukkit.createInventory(player, 45, LanguageManager.getValue("customrecipecreator"));
         BookManager.fillEmpty(inv);
         inv.setItem(11, null);
         inv.setItem(12, null);
@@ -40,7 +40,7 @@ public class RecipeCreator implements Listener {
 
     @EventHandler
     private void onInventoryClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() == event.getView().getTopInventory() && event.getView().getTitle().equals(ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Custom Recipe Creator")) {
+        if (event.getClickedInventory() == event.getView().getTopInventory() && event.getView().getTitle().equals(LanguageManager.getValue("customrecipecreator"))) {
 
             Inventory inv = event.getClickedInventory();
             int slot = event.getRawSlot();
@@ -56,7 +56,7 @@ public class RecipeCreator implements Listener {
                             return;
                         }
                     }
-                    event.getWhoClicked().sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Recipe");
+                    event.getWhoClicked().sendMessage(CustomRecipeAPI.prefix + LanguageManager.getValue("invalidrecipe"));
                 } else if (inv.getItem(slot) != null && slot == 8) {
                     inv.setItem(8, createShapelessItem(!getCurrentShape(inv.getItem(slot))));
                 }
@@ -92,7 +92,7 @@ public class RecipeCreator implements Listener {
     private static ItemStack createCreateItem() {
         ItemStack create = new ItemStack(Material.GREEN_TERRACOTTA);
         ItemMeta meta = create.getItemMeta();
-        meta.setDisplayName(ChatColor.GREEN + "Create Custom Recipe");
+        meta.setDisplayName(LanguageManager.getValue("createrecipe"));
         create.setItemMeta(meta);
         return create;
     }
@@ -100,8 +100,8 @@ public class RecipeCreator implements Listener {
     public static ItemStack createShapelessItem(boolean isShaped) {
         ItemStack shapeless = new ItemStack(Material.CRAFTING_TABLE);
         ItemMeta meta = shapeless.getItemMeta();
-        meta.setDisplayName(ChatColor.BLUE + "Toggle Shapeless Recipe");
-        meta.setLore(Arrays.asList("", ChatColor.GRAY + "Shaped: " + ChatColor.BLUE + isShaped));
+        meta.setDisplayName(LanguageManager.getValue("toggleshapeless"));
+        meta.setLore(Arrays.asList("", ChatColor.GRAY + LanguageManager.getValue("shaped") + ": " + ChatColor.BLUE + isShaped));
         shapeless.setItemMeta(meta);
         return shapeless;
     }

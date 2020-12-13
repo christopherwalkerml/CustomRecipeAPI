@@ -63,7 +63,7 @@ public class CraftItemTask extends BukkitRunnable {
                                     if (inv.addItem(lastRecipe.getResult().clone()).keySet().size() == 0) {
                                         removeRecipeFromTable(lastRecipe);
                                     } else {
-                                        player.sendMessage(ChatColor.RED.toString() + "Inventory is full. Cannot craft item.");
+                                        player.sendMessage(LanguageManager.getValue("fullinv"));
                                     }
                                     return;
                                 }

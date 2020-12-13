@@ -17,7 +17,7 @@ import static me.darkolythe.customrecipeapi.RecipeCreator.createShapelessItem;
 public class BookManager {
 
     public static Inventory getRecipeBook(Player player, int page) {
-        Inventory inv = Bukkit.createInventory(player, 54, ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Recipe Book");
+        Inventory inv = Bukkit.createInventory(player, 54, LanguageManager.getValue("recipebook"));
 
         createBottomRow(inv, page);
 
@@ -40,14 +40,14 @@ public class BookManager {
             lore = new ArrayList<>();
         }
         lore.add("");
-        lore.add(ChatColor.GRAY + "Left click to view recipe.");
+        lore.add(LanguageManager.getValue("leftclicktoview"));
 
         if (player.hasPermission("crapi.giveitem")) {
-            lore.add(ChatColor.GRAY + "Right click to give yourself this item.");
+            lore.add(LanguageManager.getValue("rightclicktogive"));
         }
         if (player.hasPermission("crapi.op")) {
             lore.add("");
-            lore.add(ChatColor.GRAY + "Permission: crapi.craft." + recipe.getPermission());
+            lore.add(ChatColor.GRAY + LanguageManager.getValue("permission") + ": crapi.craft." + recipe.getPermission());
         }
         lore.add(ChatColor.DARK_GRAY + "id: " + recipe.getID());
         meta.setLore(lore);
@@ -58,11 +58,11 @@ public class BookManager {
 
     public static void createBottomRow(Inventory inv, int page) {
         if (APIManager.getRecipes().size() > (45 * (page + 1))) {
-            ItemStack invstack = createArrow("Next Page", "Current page", page);
+            ItemStack invstack = createArrow(LanguageManager.getValue("nextpage"), LanguageManager.getValue("Current Page"), page);
             inv.setItem(53, invstack);
         }
         if (page >= 1) {
-            ItemStack invstack = createArrow("Previous Page", "Current page", page);
+            ItemStack invstack = createArrow(LanguageManager.getValue("previouspage"), LanguageManager.getValue("currentpage"), page);
             inv.setItem(45, invstack);
         }
     }
@@ -81,7 +81,7 @@ public class BookManager {
         CustomRecipe recipe = getRecipeFromItem(item);
         if (recipe != null) {
 
-            Inventory inv = Bukkit.createInventory(player, 45, ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Custom Recipe View");
+            Inventory inv = Bukkit.createInventory(player, 45, LanguageManager.getValue("customrecipeview"));
 
             fillEmpty(inv);
 
@@ -119,7 +119,7 @@ public class BookManager {
         ItemStack item = new ItemStack(Material.BARRIER);
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(ChatColor.RED + "Back to Menu");
+        meta.setDisplayName(LanguageManager.getValue("backtomenu"));
         item.setItemMeta(meta);
 
         return item;
@@ -128,8 +128,8 @@ public class BookManager {
     static ItemStack createDeleteButton() {
         ItemStack del = new ItemStack(Material.RED_TERRACOTTA);
         ItemMeta delmeta = del.getItemMeta();
-        delmeta.setDisplayName(ChatColor.RED + "Delete Recipe");
-        delmeta.setLore(Arrays.asList(ChatColor.GRAY + "cannot be undone"));
+        delmeta.setDisplayName(LanguageManager.getValue("deleterecipe"));
+        delmeta.setLore(Arrays.asList(LanguageManager.getValue("cannotbeundone")));
         del.setItemMeta(delmeta);
         return del;
     }
@@ -137,7 +137,7 @@ public class BookManager {
     static void fillEmpty(Inventory inv) {
         ItemStack empty = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
         ItemMeta meta = empty.getItemMeta();
-        meta.setDisplayName(ChatColor.GRAY + "Recipe View");
+        meta.setDisplayName(LanguageManager.getValue("recipeview"));
         empty.setItemMeta(meta);
 
         for (int i = 0; i < 45; i++) {
