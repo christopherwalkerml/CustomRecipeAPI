@@ -56,7 +56,9 @@ public class ConfigHandler {
                     CustomRecipe r = new CustomRecipe(result, recipe);
                     r.setForced(recipeDataConfig.getBoolean("recipes." + recipes + ".forced"));
                     r.setID(recipes);
-                    CustomRecipeAPI.getManager().addRecipe(r);
+                    if (result.getType() != Material.AIR) {
+                        CustomRecipeAPI.getManager().addRecipe(r);
+                    }
                 }
             }
         }

@@ -35,8 +35,12 @@ public class BookManager {
         ItemStack item = recipe.getResult().clone();
         ItemMeta meta = item.getItemMeta();
 
+        if (item.getType() == Material.AIR) {
+            return new ItemStack(Material.AIR);
+        }
+
         List<String> lore = meta.getLore();
-        if (lore == null) {
+        if (meta.getLore() == null) {
             lore = new ArrayList<>();
         }
         lore.add("");
