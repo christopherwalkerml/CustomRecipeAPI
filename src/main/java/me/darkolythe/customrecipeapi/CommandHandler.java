@@ -124,16 +124,18 @@ public class CommandHandler implements CommandExecutor {
                     }
                     return true;
                 } else {
-                    sender.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /dsp give <user> <item> <amt>");
+                    sender.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi give <user> <item> <amt>");
                     return false;
                 }
             } else {
                 if (sender.hasPermission("crapi.give")) {
-                    sender.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /dsp [(give <user> <item> <amt>), items]");
+                    sender.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "Invalid Arguments: /crapi [(give <user> <item> <amt>), items]");
+                } else {
+                    sender.sendMessage(CustomRecipeAPI.prefix + ChatColor.RED + "You do not have permission to do that!");
                 }
             }
         }
-        return false;
+        return true;
     }
 
     private ItemStack getItemWithName(String itemName) {
