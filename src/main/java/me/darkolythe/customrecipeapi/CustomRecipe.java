@@ -15,7 +15,7 @@ public class CustomRecipe implements ConfigurationSerializable {
     private boolean forced;
     private String ID = "";
     private String permission = "";
-    private boolean fromPlugin = false;
+    private boolean isFromPlugin = false;
     private boolean isShaped = true;
 
     @Override
@@ -98,11 +98,11 @@ public class CustomRecipe implements ConfigurationSerializable {
     }
 
     public void setFromPlugin(boolean val) {
-        fromPlugin = val;
+        isFromPlugin = val;
     }
 
     public boolean getFromPlugin() {
-        return fromPlugin;
+        return isFromPlugin;
     }
 
     public void setShaped(boolean shapeless) {
@@ -245,7 +245,7 @@ public class CustomRecipe implements ConfigurationSerializable {
 
 
     /*
-        private List<ItemStack> recipe;
+    private List<ItemStack> recipe;
     private ItemStack result;
     private boolean forced;
     private String ID = "";

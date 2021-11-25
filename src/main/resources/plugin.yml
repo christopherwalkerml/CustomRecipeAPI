@@ -1,5 +1,5 @@
 name: CustomRecipeAPI
-version: 1.5.2
+version: 1.6.0
 main: me.darkolythe.customrecipeapi.CustomRecipeAPI
 api-version: 1.13
 
@@ -16,7 +16,7 @@ permissions:
     description: Allows the use of CRAPI commands
     default: op
   crapi.book:
-    description: Allows the use of the CRAPI recipe book
+    description: Allows the use of the CRAPI recipe book and workbench viewer
     default: op
   crapi.giveitem:
     description: Allows the use of the CRAPI recipe book to give items
@@ -27,14 +27,14 @@ permissions:
   crapi.setworkbench:
     description: Allows the user to update the workbench recipe
     default: op
-  crapi.viewworkbench:
-    description: Allows the user to view the workbench recipe
-    default: op
   crapi.craft:
-    description: Allows the user to craft custom recipes
+    description: Allows the user to craft custom recipes. If you are OP, each recipe has a specific permission associated to it and you can view each recipe's permission in the recipe book in their lore. You can use that to give individual recipe permissions to players.
     default: true
   crapi.craftall:
     description: Allows the user to craft every custom recipe
+    default: op
+  crapi.give:
+    description: Allows the user to use the /crapi give and /crapi items commands
     default: op
   crapi.op:
     description: Allows the user to view the permission name of each recipe

@@ -23,6 +23,7 @@ public class WorkbenchManager implements Listener {
 
     private static CustomRecipeAPI main = CustomRecipeAPI.getInstance();
 
+
     static Inventory createWorkbenchCreator() {
         Inventory inv = Bukkit.createInventory(null, InventoryType.DISPENSER, ChatColor.YELLOW.toString() + ChatColor.BOLD.toString() + "Workbench Recipe (close to update)");
         fillInventory(inv);
@@ -126,6 +127,4 @@ public class WorkbenchManager implements Listener {
         }
         return items;
     }
-
-
 }

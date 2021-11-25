@@ -21,12 +21,15 @@ public class BookManager {
 
         createBottomRow(inv, page);
 
-        for (int i = 0; i < 45; i++) {
-            if ((page * 45) + i < APIManager.getRecipes().size()) {
-                inv.setItem(inv.firstEmpty(), createRecipe(APIManager.getRecipes().get((page * 45) + i), player));
-            } else {
-                break;
+        int i = 0;
+        int count = 0;
+        while (count < 45 && (page * 45) + i < APIManager.getRecipes().size()) {
+            CustomRecipe recipe = APIManager.getRecipes().get((page * 45) + i);
+            if (player.hasPermission("crapi.craft." + recipe.getPermission()) || player.hasPermission("crapi.craftall")) {
+                inv.setItem(inv.firstEmpty(), createRecipe(recipe, player));
+                count += 1;
             }
+            i += 1;
         }
         return inv;
     }
@@ -51,7 +54,7 @@ public class BookManager {
         }
         if (player.hasPermission("crapi.op")) {
             lore.add("");
-            lore.add(ChatColor.GRAY + LanguageManager.getValue("permission") + ": crapi.craft." + recipe.getPermission());
+            lore.add(ChatColor.RED + LanguageManager.getValue("permission") + ":" + ChatColor.GRAY + " crapi.craft." + recipe.getPermission());
         }
         lore.add(ChatColor.DARK_GRAY + "id: " + recipe.getID());
         meta.setLore(lore);

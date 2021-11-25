@@ -67,12 +67,15 @@ public class ConfigHandler {
     public void saveWorkbench() {
         recipeDataConfig = YamlConfiguration.loadConfiguration(recipeData);
 
-        recipeDataConfig.set("workbench.result", APIManager.getWorkbench().getResult());
-        recipeDataConfig.set("workbench.recipe", recipeList());
         try {
+            recipeDataConfig.set("workbench.result", APIManager.getWorkbench().getResult());
+            recipeDataConfig.set("workbench.recipe", recipeList());
+
             recipeDataConfig.save(recipeData);
         } catch (IOException e) {
-            System.out.println(CustomRecipeAPI.prefix + ChatColor.RED + "Could not save workbench recipe");
+            System.out.println(CustomRecipeAPI.prefix + ChatColor.RED + "Could not save workbench recipe.");
+        } catch (NullPointerException e) {
+            System.out.println(CustomRecipeAPI.prefix + ChatColor.RED + "Could not save workbench recipe. Did you create a recipe for the workbench? (/crapi setworkbench)");
         }
     }
 
